@@ -1,0 +1,29 @@
+# version: '3'
+services:
+  db:
+    image: postgres:13
+    container_name: TablesDB
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: Tables
+    ports:
+      - '5432:5432'
+
+  app:
+    build: .
+    container_name: app2
+    command: npm run start:dev
+    environment:
+      POSTGRES_HOST: TablesDB
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: Tables
+    ports:
+      - '3001:3001'
+    depends_on:
+      - db
+
+volumes:
+  pgdata: {}
